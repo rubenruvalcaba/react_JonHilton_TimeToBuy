@@ -2,9 +2,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TimeToBuy.Domain;
+using TimeToBuy.Features;
 
 namespace TimeToBuy
 {
@@ -28,6 +31,12 @@ namespace TimeToBuy
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            var connectionString = @"Server=(localdb)\MSSQLLocalDB;Database=TimeToBuy;Trusted_Connection=True;ConnectRetryCount=0";
+            services.AddDbContext<StoreContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddScoped<ProductService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

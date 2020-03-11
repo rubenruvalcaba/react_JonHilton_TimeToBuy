@@ -6,7 +6,7 @@ import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 
 import './custom.css'
-import ProductDetail from './components/ProductDetail';
+import ProductDetail from './components/Products/ProductDetail';
 
 export default class App extends Component {
   static displayName = App.name;
