@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using TimeToBuy.Domain;
 
@@ -21,7 +22,7 @@ namespace TimeToBuy.Features
                 var cart = GetOrCreateCart(addToCartRequest.SessionId);
 
                 // Add new line item or increase qty
-                AddOrIncreaseItem(cart, addToCartRequest.ProductId);                              
+                AddOrIncreaseItem(cart, addToCartRequest.ProductId, 1);                              
 
                 // Save to database                
                 _dbContext.SaveChanges();
@@ -32,6 +33,7 @@ namespace TimeToBuy.Features
             private ShoppingCart GetOrCreateCart(Guid sessionId)
             {
                 var cart = _dbContext.ShoppingCart
+                            .Include(c=>c.Items)
                             .SingleOrDefault(b => b.SessionId == sessionId);
                 if (cart == null)
                 {
@@ -46,7 +48,7 @@ namespace TimeToBuy.Features
                 return cart;
             }
 
-            private void AddOrIncreaseItem(ShoppingCart cart, int productId)
+            private void AddOrIncreaseItem(ShoppingCart cart, int productId, int quantity)
             {                
                 var item = cart.Items.SingleOrDefault(b => b.ProductId == productId);
                 if (item == null)
@@ -54,13 +56,13 @@ namespace TimeToBuy.Features
                     cart.Items.Add(new CartLineItems()
                     {
                         ProductId = productId,
-                        Quantity = 1
+                        Quantity = quantity
                     });
 
                 }
                 else
                 {
-                    item.Quantity += 1;
+                    item.Quantity += quantity;
                 }
 
             }
