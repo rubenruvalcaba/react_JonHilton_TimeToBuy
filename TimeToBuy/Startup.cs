@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TimeToBuy.Domain;
 using TimeToBuy.Features;
+using static TimeToBuy.Features.CartController;
 
 namespace TimeToBuy
 {
@@ -36,6 +37,7 @@ namespace TimeToBuy
             services.AddDbContext<StoreContext>(options => options.UseSqlServer(connectionString));
 
             services.AddScoped<ProductService>();
+            services.AddScoped<CartService>();
 
         }
 

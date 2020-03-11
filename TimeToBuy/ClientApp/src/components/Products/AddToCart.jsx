@@ -3,8 +3,14 @@ import Axios from "axios";
 
 export default class AddToCart extends React.Component {
     async addToCart() {
-        const id = this.props.productId;
-        await Axios.post('/api/cart', { productId: id });        
+
+        const sessionId = localStorage.sessionId;
+        const result =  await Axios.post('/api/cart', {
+            productId: this.props.productId,
+            sessionId: sessionId
+        });  
+        localStorage.sessionId = result.data.sessionId;
+
     }
 
     render() {
