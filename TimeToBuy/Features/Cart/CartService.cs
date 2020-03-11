@@ -14,12 +14,18 @@ namespace TimeToBuy.Features
             public CartService(StoreContext dbContext)
             {
                 _dbContext = dbContext;
-            }
+            }            
 
             public ShoppingCart AddToCart(AddToCartRequest addToCartRequest)
             {
+                var sessionId = Guid.Empty;
+                if(addToCartRequest.SessionId != null)
+                {
+                    sessionId = addToCartRequest.SessionId.Value;
+                }
+
                 // Get or create a new cart
-                var cart = GetOrCreateCart(addToCartRequest.SessionId);
+                var cart = GetOrCreateCart(sessionId);
 
                 // Add new line item or increase qty
                 AddOrIncreaseItem(cart, addToCartRequest.ProductId, 1);                              
@@ -68,6 +74,7 @@ namespace TimeToBuy.Features
             }
 
         }
+
 
     }
 }

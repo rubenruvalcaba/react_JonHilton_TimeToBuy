@@ -22,13 +22,19 @@ namespace TimeToBuy.Features
         {
             var cart = _cartService.AddToCart(addToCartRequest);
 
-            return Ok(cart);
+            return Ok(new AddToCartResponse() { SessionId = cart.SessionId });
         }
 
         public class AddToCartRequest
         {
-            public Guid SessionId { get; set; }
+            public Guid? SessionId { get; set; }
             public int ProductId { get; set; }
+        }
+
+
+        public class AddToCartResponse
+        {
+            public Guid SessionId { get; set; }
         }
 
     }
