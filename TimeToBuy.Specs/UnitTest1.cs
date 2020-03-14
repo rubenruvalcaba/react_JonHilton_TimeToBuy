@@ -59,8 +59,8 @@ namespace TimeToBuy.Specs
             using (var context = new StoreContext(_options))
             {
                 var cartService = new CartService(context);
-                var result = cartService.AddToCart(new AddToCartRequest() { ProductId = 1, SessionId = null });
-                Assert.Single(result.Items);                
+                var result = cartService.AddToCart(new AddToCartRequest() { ProductId = 1, Quantity = 1, SessionId = null });
+                Assert.Single(result.Items);
                 Assert.Equal(1, result.Items[0].Quantity);
             }
         }
@@ -71,12 +71,28 @@ namespace TimeToBuy.Specs
             using (var context = new StoreContext(_options))
             {
                 var cartService = new CartService(context);
-                var firstLineItem = cartService.AddToCart(new AddToCartRequest() { ProductId = 1, SessionId = null });                                
-                var secondLineItem = cartService.AddToCart(new AddToCartRequest() { ProductId = 1, SessionId = firstLineItem.SessionId });
+                var firstLineItem = cartService.AddToCart(new AddToCartRequest() { ProductId = 1, Quantity = 1, SessionId = null });
+                var secondLineItem = cartService.AddToCart(new AddToCartRequest() { ProductId = 1, Quantity = 1, SessionId = firstLineItem.SessionId });
                 Assert.Single(secondLineItem.Items);
                 Assert.Equal(2, secondLineItem.Items[0].Quantity);
             }
         }
-        
+
+        [Fact]
+        public void AddQuantityTwoLineItem()
+        {
+            using (var context = new StoreContext(_options))
+            {
+                var cartService = new CartService(context);
+                var cart = cartService.AddToCart(new AddToCartRequest()
+                {
+                    ProductId = 1,
+                    Quantity = 2,
+                    SessionId = null
+                });
+                Assert.Equal(2, cart.Items[0].Quantity);
+            }
+        }
+
     }
 }

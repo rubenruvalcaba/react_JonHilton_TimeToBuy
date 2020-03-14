@@ -16,19 +16,19 @@ namespace TimeToBuy.Features
                 _dbContext = dbContext;
             }            
 
-            public ShoppingCart AddToCart(AddToCartRequest addToCartRequest)
+            public ShoppingCart AddToCart(AddToCartRequest request)
             {
                 var sessionId = Guid.Empty;
-                if(addToCartRequest.SessionId != null)
+                if(request.SessionId != null)
                 {
-                    sessionId = addToCartRequest.SessionId.Value;
+                    sessionId = request.SessionId.Value;
                 }
 
                 // Get or create a new cart
                 var cart = GetOrCreateCart(sessionId);
 
                 // Add new line item or increase qty
-                AddOrIncreaseItem(cart, addToCartRequest.ProductId, 1);                              
+                AddOrIncreaseItem(cart, request.ProductId, request.Quantity);                              
 
                 // Save to database                
                 _dbContext.SaveChanges();
