@@ -23,7 +23,6 @@ export default class ProductList extends Component {
                 <div key={product.id} className="col-4">
                     <ProductCard id={product.id} name={product.title} description={product.description} />
                 </div>)}
-
         </div>);
     }
 

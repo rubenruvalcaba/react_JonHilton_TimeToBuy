@@ -35,12 +35,11 @@ namespace TimeToBuy.Features
 
                 return cart;
             }
+          
 
             private ShoppingCart GetOrCreateCart(Guid sessionId)
             {
-                var cart = _dbContext.ShoppingCart
-                            .Include(c=>c.Items)
-                            .SingleOrDefault(b => b.SessionId == sessionId);
+                var cart = GetCart(sessionId);
                 if (cart == null)
                 {
                     cart = new ShoppingCart()
@@ -54,15 +53,30 @@ namespace TimeToBuy.Features
                 return cart;
             }
 
+            internal ShoppingCart GetCart(Guid sessionId)
+            {
+                if (sessionId.Equals(Guid.Empty))
+                {
+                    return null;
+                }
+
+                var cart = _dbContext.ShoppingCart
+                             .Include(c => c.Items)
+                             .SingleOrDefault(b => b.SessionId == sessionId);
+                return cart;              
+            }
+
             private void AddOrIncreaseItem(ShoppingCart cart, int productId, int quantity)
             {                
                 var item = cart.Items.SingleOrDefault(b => b.ProductId == productId);
                 if (item == null)
                 {
+                    //var product = ProductService.
                     cart.Items.Add(new CartLineItems()
                     {
                         ProductId = productId,
                         Quantity = quantity
+                        
                     });
 
                 }
