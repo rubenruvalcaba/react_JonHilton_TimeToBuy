@@ -19,7 +19,7 @@ namespace TimeToBuy.Features
 
         #region Get 
 
-        [HttpGet]        
+        [HttpGet]
         public IActionResult GetCart(Guid sessionId)
         {
             if (sessionId.Equals(Guid.Empty))
@@ -28,7 +28,7 @@ namespace TimeToBuy.Features
             };
 
             var cart = _cartService.GetCart(sessionId);
-            if(cart == null)
+            if (cart == null)
             {
                 return NotFound("No se encontró el carrito");
             }
@@ -45,7 +45,9 @@ namespace TimeToBuy.Features
         [HttpPost]
         public IActionResult AddToCart(AddToCartRequest addToCartRequest)
         {
-            var cart = _cartService.AddToCart(addToCartRequest);
+            var cart = _cartService.AddToCart(addToCartRequest.SessionId,
+                                              addToCartRequest.ProductId,
+                                              addToCartRequest.Quantity);
 
             return Ok(new AddToCartResponse() { SessionId = cart.SessionId });
         }
@@ -56,12 +58,12 @@ namespace TimeToBuy.Features
             public int ProductId { get; set; }
             public int Quantity { get; set; }
         }
-
-
+        
         public class AddToCartResponse
         {
             public Guid SessionId { get; set; }
         }
+
         #endregion
 
 

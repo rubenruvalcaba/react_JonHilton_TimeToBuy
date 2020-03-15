@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using TimeToBuy.Domain;
+using TimeToBuy.Features;
 using Xunit;
 using static TimeToBuy.Features.CartController;
 
@@ -24,7 +25,7 @@ namespace TimeToBuy.Specs
             using (var context = new StoreContext(_options))
             {
                 var cartService = new CartService(context);
-                var result = cartService.AddToCart(new AddToCartRequest() { ProductId = 1, SessionId = null });
+                var result = cartService.AddToCart(null, 1, 1);
                 Assert.NotEqual(Guid.Empty, result.SessionId);
             }
 
@@ -45,7 +46,7 @@ namespace TimeToBuy.Specs
             using (var context = new StoreContext(_options))
             {
                 var cartService = new CartService(context);
-                var result = cartService.AddToCart(new AddToCartRequest() { ProductId = 1, SessionId = sessionId });
+                var result = cartService.AddToCart(sessionId,1, 1);
 
                 // should get back the session id of the existing cart
                 Assert.Equal(sessionId, result.SessionId);
@@ -59,7 +60,7 @@ namespace TimeToBuy.Specs
             using (var context = new StoreContext(_options))
             {
                 var cartService = new CartService(context);
-                var result = cartService.AddToCart(new AddToCartRequest() { ProductId = 1, Quantity = 1, SessionId = null });
+                var result = cartService.AddToCart( null, 1, 1);
                 Assert.Single(result.Items);
                 Assert.Equal(1, result.Items[0].Quantity);
             }
@@ -71,8 +72,8 @@ namespace TimeToBuy.Specs
             using (var context = new StoreContext(_options))
             {
                 var cartService = new CartService(context);
-                var firstLineItem = cartService.AddToCart(new AddToCartRequest() { ProductId = 1, Quantity = 1, SessionId = null });
-                var secondLineItem = cartService.AddToCart(new AddToCartRequest() { ProductId = 1, Quantity = 1, SessionId = firstLineItem.SessionId });
+                var firstLineItem = cartService.AddToCart( null,1,1);
+                var secondLineItem = cartService.AddToCart(firstLineItem.SessionId,1,1);
                 Assert.Single(secondLineItem.Items);
                 Assert.Equal(2, secondLineItem.Items[0].Quantity);
             }
@@ -84,12 +85,7 @@ namespace TimeToBuy.Specs
             using (var context = new StoreContext(_options))
             {
                 var cartService = new CartService(context);
-                var cart = cartService.AddToCart(new AddToCartRequest()
-                {
-                    ProductId = 1,
-                    Quantity = 2,
-                    SessionId = null
-                });
+                var cart = cartService.AddToCart(null,1,2);
                 Assert.Equal(2, cart.Items[0].Quantity);
             }
         }

@@ -8,7 +8,7 @@ export default class Cart extends Component {
 
     async componentDidMount() {
         const sessionId = localStorage.sessionId;
-        const result = await Axios.get(`/api/cart?sessionId=${sessionId}`);        
+        const result = await Axios.get(`/api/cart?sessionId=${sessionId}`);
         const cart = result.data;
         this.setState({ cartItems: cart.items });
     }
@@ -28,14 +28,16 @@ export default class Cart extends Component {
                         <th>Price</th>
                         <th>Amount</th>
                     </thead>
-                    {this.state.cartItems.map(item =>
-                        <tr id={item.productId}>
-                            <td>{item.name}</td>
-                            <td>{item.quantity}</td>
-                            <td>{item.price}</td>
-                            <td>{item.quantity * item.price}</td>
-                        </tr>)
-                    }
+                    <tbody>
+                        {this.state.cartItems.map(item =>
+                            <tr id={item.productId}>
+                                <td><Link to={`/product/${item.productId}`}>{item.name}</Link></td>
+                                <td>{item.quantity}</td>
+                                <td>{item.price}</td>
+                                <td>{item.quantity * item.price}</td>
+                            </tr>)
+                        }
+                    </tbody>
                 </table>
 
 
