@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TimeToBuy.Features
@@ -19,7 +20,7 @@ namespace TimeToBuy.Features
 
         #region Get 
 
-        [HttpGet]
+        [HttpGet("{sessionId}")]
         public IActionResult GetCart(Guid sessionId)
         {
             if (sessionId.Equals(Guid.Empty))
@@ -66,6 +67,21 @@ namespace TimeToBuy.Features
 
         #endregion
 
+        #region Remove
 
+        [HttpDelete("{sessionId}/lines/{lineItemId}")]
+        public IActionResult DeleteItem (Guid sessionId, int lineItemId)
+        {
+            try
+            {
+                _cartService.DeleteItemFormCart(sessionId, lineItemId);
+                return Ok();
+            }catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        #endregion
     }
 }

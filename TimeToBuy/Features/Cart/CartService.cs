@@ -89,6 +89,24 @@ namespace TimeToBuy.Features
             }
 
         }
+        public void DeleteItemFormCart(Guid sessionId, int lineItemId)
+        {
+            var cart = GetCart(sessionId);
+            if (cart == null)
+            {
+                throw new Exception("No existe carrito para esta sesión");
+            }
+            
+            var lineItem = cart.Items.FirstOrDefault(x => x.Id == lineItemId);
+            if(lineItem == null)
+            {
+                return;
+            }
+
+            _dbContext.Set<CartLineItems>().Remove(lineItem);           
+            _dbContext.SaveChanges();
+
+        }
 
     }
 
