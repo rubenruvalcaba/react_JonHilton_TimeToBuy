@@ -2,6 +2,8 @@
 import { CustomerDetails } from "./CustomerDetails";
 import { Address } from "./Address";
 import { Form, FormGroup, Label, Input } from "reactstrap";
+import { StripeProvider, Elements } from "react-stripe-elements";
+import CheckoutForm from "./CheckoutForm";
 
 export class Checkout extends React.Component {
 
@@ -9,6 +11,11 @@ export class Checkout extends React.Component {
 
     toggleDeliverToBillingAddress = () => {
         this.setState({ deliverToBillingAddress: !this.state.deliverToBillingAddress });
+    }
+
+    handlePaymentMethodChanged = (token) => {
+        if (token)
+            this.setState({ paymentToken: token });
     }
 
     render() {
@@ -32,6 +39,11 @@ export class Checkout extends React.Component {
             </div>
             }
 
+            <StripeProvider apiKey='pk_test_3oR8xfHONoFCRi3WA1H9OTj700kU9nTPsb'>
+                <Elements>
+                    <CheckoutForm onPaymentMethodChanged={this.handlePaymentMethodChanged}/>
+                </Elements>
+            </StripeProvider>
         </div>);
     }
 }
