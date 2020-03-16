@@ -108,6 +108,14 @@ namespace TimeToBuy.Features
 
         }
 
+        public void EmptyCart(ShoppingCart cart)
+        {
+            cart.Items.Clear();
+            _dbContext.ShoppingCart.Remove(cart);
+        }
+
+
+
     }
 
 }

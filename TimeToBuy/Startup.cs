@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TimeToBuy.Domain;
 using TimeToBuy.Features;
+using TimeToBuy.Features.Checkout;
 using static TimeToBuy.Features.CartController;
 
 namespace TimeToBuy
@@ -38,6 +39,7 @@ namespace TimeToBuy
 
             services.AddScoped<ProductService>();
             services.AddScoped<CartService>();
+            services.AddScoped<CheckoutService>();
 
         }
 

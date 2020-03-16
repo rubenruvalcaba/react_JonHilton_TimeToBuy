@@ -4,6 +4,7 @@ import { Address } from "./Address";
 import { Form, FormGroup, Label, Input } from "reactstrap";
 import { StripeProvider, Elements } from "react-stripe-elements";
 import CheckoutForm from "./CheckoutForm";
+import Axios from "axios";
 
 export class Checkout extends React.Component {
 
@@ -13,9 +14,15 @@ export class Checkout extends React.Component {
         this.setState({ deliverToBillingAddress: !this.state.deliverToBillingAddress });
     }
 
-    handlePaymentMethodChanged = (token) => {
-        if (token)
+     handlePaymentMethodChanged = async (token) => {
+        if (token) {
             this.setState({ paymentToken: token });
+            await Axios.post('/api/checkout', {
+                ...this.state,
+                paymentToken: token.id,
+                sessionId: localStorage.sessionId
+            });
+        }
     }
 
     render() {

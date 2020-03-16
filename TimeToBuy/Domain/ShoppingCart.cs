@@ -11,6 +11,7 @@ namespace TimeToBuy.Domain
         public Guid SessionId { get; set; }
         public DateTime CreatedOn { get; set; }
         public List<CartLineItems> Items { get; set; } = new List<CartLineItems>();
+       
     }
 
     public class CartLineItems
