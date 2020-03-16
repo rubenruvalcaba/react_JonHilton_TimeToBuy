@@ -1,7 +1,7 @@
 ﻿import React, { Component } from "react";
 import Rating from "../Rating";
 import Axios from "axios";
-import AddToCart from "./AddToCart";
+import AddToCart from "../Cart/AddToCart";
 
 export default class ProductDetail extends Component {
 

@@ -1,6 +1,6 @@
 ﻿import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import AddToCart from "./AddToCart";
+import AddToCart from "../Cart/AddToCart";
 
 export default function ProductCard(props) {
     return (
