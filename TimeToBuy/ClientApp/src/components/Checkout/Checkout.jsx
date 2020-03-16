@@ -41,9 +41,13 @@ export class Checkout extends React.Component {
 
             <StripeProvider apiKey='pk_test_3oR8xfHONoFCRi3WA1H9OTj700kU9nTPsb'>
                 <Elements>
-                    <CheckoutForm onPaymentMethodChanged={this.handlePaymentMethodChanged}/>
+                    <CheckoutForm
+                        customer={this.state.customer}
+                        billingAddress={this.state.billingAddress}
+                        onPaymentMethodChanged={this.handlePaymentMethodChanged} />
                 </Elements>
             </StripeProvider>
+
         </div>);
     }
 }
