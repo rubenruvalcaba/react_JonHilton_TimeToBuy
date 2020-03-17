@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TimeToBuy.Features.Checkout
 {
+    [Authorize]
     [Route("/api/[controller]")]
     [ApiController]
     public class CheckoutController : Controller

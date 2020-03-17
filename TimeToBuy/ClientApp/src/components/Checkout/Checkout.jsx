@@ -14,14 +14,21 @@ export class Checkout extends React.Component {
         this.setState({ deliverToBillingAddress: !this.state.deliverToBillingAddress });
     }
 
-     handlePaymentMethodChanged = async (token) => {
+    handlePaymentMethodChanged = async (token) => {
         if (token) {
+
+            const bearerToken = await this.props.auth.getTokenSilently();
+
             this.setState({ paymentToken: token });
             await Axios.post('/api/checkout', {
                 ...this.state,
                 paymentToken: token.id,
-                sessionId: localStorage.sessionId
+                sessionId: localStorage.sessionId           
+            }, {
+                headers: { 'Authorization': `bearer ${bearerToken}` }
             });
+
+            this.props.history.push('/');
         }
     }
 

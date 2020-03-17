@@ -7,7 +7,7 @@ export default class CheckoutPage extends Component {
     render() {
         return (<Row>
             <Col md={8}>
-                <Checkout  />
+                <Checkout auth={this.props.auth} {...this.props}/>
             </Col>
             <Col md={4}>
                 <OrderSummary />

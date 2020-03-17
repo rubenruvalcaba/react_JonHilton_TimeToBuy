@@ -28,7 +28,7 @@ export default class App extends Component {
                         <Callback auth={this.props.auth} {...others} />
                     } />
                     <Route path='/checkout' component={({ ...others }) =>
-                        <SecureCheckout auth={this.props.auth}>
+                        <SecureCheckout auth={this.props.auth} {...others}>
                             <CheckoutPage auth={this.props.auth} {...others} />
                         </SecureCheckout>
                     } />

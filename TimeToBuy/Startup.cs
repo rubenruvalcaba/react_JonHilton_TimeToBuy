@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using TimeToBuy.Domain;
 using TimeToBuy.Features;
 using TimeToBuy.Features.Checkout;
@@ -34,13 +37,32 @@ namespace TimeToBuy
                 configuration.RootPath = "ClientApp/build";
             });
 
+            // RERC Configures connection string and creates the DbContext using SqlServer
             var connectionString = @"Server=(localdb)\MSSQLLocalDB;Database=TimeToBuy;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<StoreContext>(options => options.UseSqlServer(connectionString));
 
+            // RERC Creates the services and lets it available for DI
             services.AddScoped<ProductService>();
             services.AddScoped<CartService>();
             services.AddScoped<CheckoutService>();
 
+            // RERC Configures api authentication through Aut0 service
+            var domain = $"https://{Configuration["Auth0:Domain"]}/";
+            
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = domain;
+                options.Audience = Configuration["Auth0:ApiIdentifier"];
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = ClaimTypes.NameIdentifier
+                };
+            });
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +83,12 @@ namespace TimeToBuy
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+
             app.UseRouting();
+
+// RERC Enables the authentication and authorization
+            app.UseAuthentication(); 
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -12,7 +12,8 @@ const rootElement = document.getElementById('root');
 const auth0 = async () => await createAuth0Client({
     domain: 'rubenruvalcaba.auth0.com',
     client_id: 'Ln803zCh6HBQxlQcFnylvuO34kIUUZZL',
-    redirect_uri: 'https://localhost:44358/callback'
+    redirect_uri: 'https://localhost:44358/callback',
+    audience: 'https://api.timetobuy.io'
 });
 
 auth0().then(auth => {
