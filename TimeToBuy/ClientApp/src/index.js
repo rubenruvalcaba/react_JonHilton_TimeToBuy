@@ -9,6 +9,7 @@ import createAuth0Client from '@auth0/auth0-spa-js';
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
 
+
 const auth0 = async () => await createAuth0Client({
     domain: 'rubenruvalcaba.auth0.com',
     client_id: 'Ln803zCh6HBQxlQcFnylvuO34kIUUZZL',

@@ -2,7 +2,7 @@
 
 export default class Callback extends React.Component {
 
-    async componentDidMount() {
+    async componentDidMount(appState) {
         await this.props.auth.handleRedirectCallback();
         this.props.history.push('/');
 

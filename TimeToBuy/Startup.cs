@@ -12,6 +12,7 @@ using System.Security.Claims;
 using TimeToBuy.Domain;
 using TimeToBuy.Features;
 using TimeToBuy.Features.Checkout;
+using TimeToBuy.Features.Orders;
 using static TimeToBuy.Features.CartController;
 
 namespace TimeToBuy
@@ -45,6 +46,7 @@ namespace TimeToBuy
             services.AddScoped<ProductService>();
             services.AddScoped<CartService>();
             services.AddScoped<CheckoutService>();
+            services.AddScoped<OrdersService>();
 
             // RERC Configures api authentication through Aut0 service
             var domain = $"https://{Configuration["Auth0:Domain"]}/";

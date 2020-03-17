@@ -11,6 +11,7 @@ import Cart from './components/Cart/Cart';
 import CheckoutPage from './components/Checkout/CheckoutPage';
 import { Button } from "reactstrap";
 import Callback from "./components/Callback";
+import MyOrders from './components/Orders/MyOrders';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -29,7 +30,12 @@ export default class App extends Component {
                     } />
                     <Route path='/checkout' component={({ ...others }) =>
                         <SecureCheckout auth={this.props.auth} {...others}>
-                            <CheckoutPage auth={this.props.auth} {...others} />
+                            <CheckoutPage auth={this.props.auth} message="Please register or log in to complete your order" {...others} />
+                        </SecureCheckout>
+                    } />
+                    <Route path='/myorders' component={({ ...others }) =>
+                        <SecureCheckout auth={this.props.auth} {...others}>
+                            <MyOrders auth={this.props.auth} message="Please log in to view your orders" {...others} />
                         </SecureCheckout>
                     } />
                 </Layout>
@@ -55,7 +61,7 @@ export class SecureCheckout extends Component {
             this.state.authenticated
                 ? this.props.children
                 : <div>
-                    <p>Please register or log in to complete your order</p>
+                    <p>{this.props.message}</p>
                     <Button color="primary" onClick={this.handleLogin}>Login or sign up</Button>
                 </div>
         );
