@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace TimeToBuy.Features.Checkout
 {
@@ -18,7 +19,10 @@ namespace TimeToBuy.Features.Checkout
         [HttpPost]
         public IActionResult Checkout(CheckoutRequest checkoutRequest)
         {
-            _checkoutService.PlaceOrder(checkoutRequest);
+            var userIdentifier = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+
+            _checkoutService.PlaceOrder(checkoutRequest, userIdentifier);
             return Ok();
         }
 

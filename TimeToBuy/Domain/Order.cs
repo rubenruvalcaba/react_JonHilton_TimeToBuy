@@ -10,12 +10,14 @@ namespace TimeToBuy.Domain
     {
         public int Id { get; set; }
 
+        public string UserIdentifier { get; set; }
         public string CustomerEmail { get; private set; }
         public List<OrderLine> Lines { get; private set; } = new List<OrderLine>();
 
-        internal static Order FromCheckoutRequest(CheckoutRequest checkoutRequest)
+        internal static Order FromCheckoutRequest(CheckoutRequest checkoutRequest, string userIdentifier)
         {
             return new Order() {
+                UserIdentifier =userIdentifier,
                 CustomerEmail = checkoutRequest.Customer.email
             };
         }

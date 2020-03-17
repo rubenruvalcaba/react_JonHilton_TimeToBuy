@@ -23,10 +23,10 @@ namespace TimeToBuy.Features.Checkout
             _dbContext = storeContext;
         }
 
-        public void PlaceOrder(CheckoutRequest checkoutRequest)
+        public void PlaceOrder(CheckoutRequest checkoutRequest, string userIdentifier)
         {
             // Create an order
-            var order = Domain.Order.FromCheckoutRequest(checkoutRequest);
+            var order = Domain.Order.FromCheckoutRequest(checkoutRequest, userIdentifier);
 
             // Get cart for session
             var cart = _cartService.GetCart(checkoutRequest.SessionId);
